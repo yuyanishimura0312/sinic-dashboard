@@ -128,6 +128,7 @@ function render() {
       const page = item.dataset.page;
       const main = document.querySelector('.main-content');
       if (page === 'dashboard') main.innerHTML = renderDashboard();
+      else if (page === 'kpi') main.innerHTML = renderKPIDashboard();
       else if (page === 'correspondence') main.innerHTML = renderCorrespondence();
       else if (page === 'portfolio') main.innerHTML = renderPortfolio();
       else if (page === 'circulation') main.innerHTML = renderCirculation();
@@ -284,6 +285,177 @@ function renderDashboard() {
               </div>
             `).join('')}
           </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderKPIDashboard() {
+  const kpiDetails = [
+    {
+      id: 1, color: 'var(--deep-brown)', title: '社会段階知覚指標',
+      subtitle: 'Social Phase Perception',
+      mainValue: 24, mainUnit: '件', mainLabel: '移行シグナル検知数',
+      trend: '+8', trendLabel: '前期比',
+      metrics: [
+        { label: 'Seed型シグナル', value: 14, max: 30, desc: '科学・技術起点の移行兆候' },
+        { label: 'Need型シグナル', value: 10, max: 30, desc: '社会ニーズ起点の移行兆候' },
+        { label: '戦略的意思決定', value: 6, max: 15, desc: 'シグナルに基づく経営判断の件数' },
+        { label: 'マッピング更新', value: 3, max: 6, desc: '社会段階マッピングの更新回数（半期）' },
+      ],
+      quarterly: [8, 12, 18, 24],
+      insight: '自律社会への移行シグナルが加速。特にAI自律エージェントの企業内統合とZ世代の「意味ある仕事」志向の二つのNeed型シグナルが顕著。'
+    },
+    {
+      id: 2, color: 'var(--amber)', title: '段階移行準備度指標',
+      subtitle: 'Stage Transition Readiness',
+      mainValue: 18, mainUnit: '%', mainLabel: '次段階準備の資源配分',
+      trend: '+3', trendLabel: '前期比',
+      metrics: [
+        { label: '人的資源配分', value: 22, max: 100, desc: '次段階準備に従事する人員比率' },
+        { label: '財務資源配分', value: 14, max: 100, desc: '次段階準備への予算配分比率' },
+        { label: 'Probe数', value: 3, max: 10, desc: 'バックキャスティング・ポートフォリオのProbe数' },
+        { label: 'SINIC理解度', value: 35, max: 100, desc: '本質的理解に達したメンバー比率' },
+      ],
+      quarterly: [10, 12, 15, 18],
+      insight: '資源配分は漸増傾向だが、目標の30%にはまだ距離がある。SINIC理論の理解浸透が最大のボトルネック。フィールドトリップ経験者の理解度は非経験者の2.5倍。'
+    },
+    {
+      id: 3, color: 'var(--terracotta)', title: '循環活性度指標',
+      subtitle: 'Circulation Vitality',
+      mainValue: 72, mainUnit: '%', mainLabel: '5循環の総合活性度',
+      trend: '+12', trendLabel: '前期比',
+      metrics: [
+        { label: 'Seed-Need循環', value: 65, max: 100, desc: '科学⇔社会ニーズの双方向活動バランス' },
+        { label: '段階移行循環', value: 45, max: 100, desc: 'シグナルに基づく組織構造調整の速度' },
+        { label: '翻訳循環', value: 58, max: 100, desc: 'ビジョン→現場実践への翻訳事例数' },
+        { label: '共創循環', value: 72, max: 100, desc: '異業種・異セクターとの共創活動の深度' },
+        { label: '身体知循環', value: 38, max: 100, desc: 'FT・体験学習の実施頻度と参加者数' },
+      ],
+      quarterly: [42, 52, 60, 72],
+      insight: '共創循環がコンソーシアム活動により大幅に活性化。一方、身体知循環は定常的なFT機会の不足により低水準。翻訳循環の「抽象→具体」変換が課題。'
+    },
+    {
+      id: 4, color: 'var(--golden)', title: '意味生成活性度指標',
+      subtitle: 'Sensemaking Vitality',
+      mainValue: 4.2, mainUnit: '回/月', mainLabel: 'パーパス対話の実施頻度',
+      trend: '+0.8', trendLabel: '前期比',
+      metrics: [
+        { label: '対話実施頻度', value: 42, max: 60, desc: '月あたりのパーパス対話セッション数（×10）' },
+        { label: '参加多様性', value: 68, max: 100, desc: '部門横断・階層横断の参加度合い' },
+        { label: 'パーパス再定義', value: 2, max: 5, desc: 'パーパスの更新・再定義の件数（半期）' },
+        { label: '自分語り率', value: 45, max: 100, desc: '自社パーパスを自分の言葉で語れるメンバー割合' },
+      ],
+      quarterly: [2.0, 2.8, 3.4, 4.2],
+      insight: '対話頻度は順調に向上。ただし「自分語り率」45%はまだ半数に満たない。経営層の参加率が低く、意味生成が現場レベルにとどまる傾向。'
+    },
+  ];
+
+  return `
+    <div class="page-header">
+      <div>
+        <div class="page-title">KPI詳細ダッシュボード</div>
+        <div class="page-subtitle">SINIC循環経営モデル — 4カテゴリの社会段階移行準備度指標</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-secondary">レポート出力</button>
+        <button class="btn btn-primary">データ更新</button>
+      </div>
+    </div>
+
+    <!-- KPI Summary Row -->
+    <div class="kpi-grid">
+      ${kpiDetails.map(k => `
+        <div class="kpi-overview-card">
+          <div class="kpi-label">${k.title}</div>
+          <div class="kpi-value">${k.mainValue}<span class="kpi-unit">${k.mainUnit}</span></div>
+          <div class="kpi-trend up">▲ ${k.trend} <span style="color:var(--text-muted)">${k.trendLabel}</span></div>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- KPI Detail Cards -->
+    ${kpiDetails.map(k => `
+      <div class="card" style="margin-bottom:20px; border-top:3px solid ${k.color};">
+        <div class="card-header">
+          <div>
+            <div class="card-title" style="font-size:16px;">${k.title}</div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${k.subtitle}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-family:'Hiragino Mincho ProN',serif; font-size:28px; font-weight:700; color:var(--deep-brown);">${k.mainValue}<span style="font-size:14px; font-weight:400; color:var(--text-muted);">${k.mainUnit}</span></div>
+            <div style="font-size:11px; color:#2d8a4e;">▲ ${k.trend} ${k.trendLabel}</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+            <!-- Left: Sub-metrics -->
+            <div>
+              <div style="font-size:12px; font-weight:600; color:var(--deep-brown); margin-bottom:12px; letter-spacing:0.05em;">サブ指標</div>
+              ${k.metrics.map(m => `
+                <div style="margin-bottom:14px;">
+                  <div style="display:flex; justify-content:space-between; align-items:baseline; margin-bottom:4px;">
+                    <span style="font-size:12px; font-weight:600; color:var(--text);">${m.label}</span>
+                    <span style="font-size:14px; font-weight:700; color:var(--deep-brown);">${m.value}<span style="font-size:10px; color:var(--text-muted);">/${m.max}</span></span>
+                  </div>
+                  <div style="height:6px; background:#f3ede6; overflow:hidden;">
+                    <div style="height:100%; width:${m.value/m.max*100}%; background:${k.color}; transition:width 0.5s;"></div>
+                  </div>
+                  <div style="font-size:10px; color:var(--text-muted); margin-top:3px;">${m.desc}</div>
+                </div>
+              `).join('')}
+            </div>
+            <!-- Right: Trend + Insight -->
+            <div>
+              <div style="font-size:12px; font-weight:600; color:var(--deep-brown); margin-bottom:12px; letter-spacing:0.05em;">四半期トレンド</div>
+              <div style="display:flex; align-items:flex-end; gap:8px; height:100px; margin-bottom:8px;">
+                ${k.quarterly.map((q, i) => {
+                  const maxQ = Math.max(...k.quarterly);
+                  const h = (q / maxQ) * 90;
+                  const labels = ['Q1', 'Q2', 'Q3', 'Q4'];
+                  return `
+                    <div style="flex:1; text-align:center;">
+                      <div style="font-size:11px; font-weight:700; color:var(--deep-brown); margin-bottom:4px;">${q}</div>
+                      <div style="height:${h}px; background:${i === 3 ? k.color : '#e8ddd0'}; transition:height 0.5s;"></div>
+                      <div style="font-size:9px; color:var(--text-muted); margin-top:4px;">${labels[i]}</div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+
+              <div style="margin-top:16px; padding:14px; background:#f8f4ef; border-left:3px solid ${k.color};">
+                <div style="font-size:10px; font-weight:600; color:var(--deep-brown); margin-bottom:6px; letter-spacing:0.08em;">INSIGHT</div>
+                <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">${k.insight}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join('')}
+
+    <!-- Overall Score -->
+    <div class="card" style="border-top:3px solid var(--deep-brown);">
+      <div class="card-header">
+        <div class="card-title">総合準備度スコア</div>
+        <div style="font-family:'Hiragino Mincho ProN',serif; font-size:32px; font-weight:700; color:var(--deep-brown);">68<span style="font-size:14px; font-weight:400; color:var(--text-muted);">/100</span></div>
+      </div>
+      <div class="card-body">
+        <div style="display:flex; gap:0; height:12px; overflow:hidden; border:1px solid var(--border);">
+          <div style="width:25%; background:var(--deep-brown);" title="社会段階知覚"></div>
+          <div style="width:18%; background:var(--amber);" title="段階移行準備度"></div>
+          <div style="width:72%; background:var(--terracotta);" title="循環活性度"></div>
+          <div style="width:42%; background:var(--golden);" title="意味生成活性度"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-top:8px; font-size:10px; color:var(--text-muted);">
+          <span>■ 知覚 24/100</span>
+          <span>■ 準備度 18/100</span>
+          <span>■ 循環 72/100</span>
+          <span>■ 意味生成 42/100</span>
+        </div>
+        <div style="margin-top:16px; padding:14px; background:var(--deep-brown); color:white;">
+          <div style="font-size:10px; letter-spacing:0.1em; color:var(--peach); margin-bottom:6px;">判定</div>
+          <div style="font-size:13px; line-height:1.7;">循環活性度は高水準だが、段階移行準備度が18%と低水準。次四半期は「次段階準備」への資源配分の引き上げとSINIC理論の組織浸透を優先課題とする。身体知循環の活性化のため、定期的なフィールドトリップの制度化を提言。</div>
         </div>
       </div>
     </div>
