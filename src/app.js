@@ -582,29 +582,116 @@ function renderCirculation() {
 }
 
 function renderPhase() {
+  const socialVelocity = 72;
+  const orgReadiness = 38;
+  const adaptationGap = socialVelocity - orgReadiness;
+
   return `
     <div class="page-header">
       <div>
         <div class="page-title">社会段階層</div>
-        <div class="page-subtitle">Social Phase Layer — 社会進化のリアルタイムモニタリング</div>
+        <div class="page-subtitle">Social Phase Layer — 社会進化のリアルタイムモニタリングと適応ギャップ測定</div>
       </div>
       <div class="page-actions">
+        <button class="btn btn-secondary">レポート</button>
         <button class="btn btn-primary">+ シグナル追加</button>
       </div>
     </div>
+
+    <!-- Phase Timeline -->
     <div class="phase-timeline" style="margin-bottom:24px;">
       <div class="phase-block current"><span class="phase-indicator active"></span><span class="phase-name">最適化社会</span><div class="phase-period">現在 — 移行期</div></div>
       <div class="phase-block next"><span class="phase-indicator pending"></span><span class="phase-name">自律社会</span><div class="phase-period">兆候検知中</div></div>
-      <div class="phase-block future"><span class="phase-indicator pending"></span><span class="phase-name">自然社会</span><div class="phase-period">ビジョン探索中</div></div>
+      <div class="phase-block future"><span class="phase-indicator pending"></span><span class="phase-name">自然社会</span><div class="phase-period">ビジョン起点</div></div>
     </div>
-    <div class="card" style="margin-bottom:16px;">
-      <div class="card-header"><div class="card-title">最近検知したシグナル</div><div class="card-badge">Seed型 / Need型</div></div>
+
+    <!-- Adaptation Gap (SINIC固有) -->
+    <div class="card" style="margin-bottom:16px; border-top:3px solid var(--deep-brown);">
+      <div class="card-header">
+        <div class="card-title">適応ギャップ（SINIC固有指標）</div>
+        <div class="card-badge" style="background:${adaptationGap > 30 ? 'rgba(192,57,43,0.1); color:#c0392b;' : 'rgba(45,138,78,0.1); color:#2d8a4e;'}">${adaptationGap > 30 ? '要注意' : '健全'}</div>
+      </div>
       <div class="card-body">
-        <div class="activity-feed">
-          <div class="activity-item"><div class="activity-dot" style="background:var(--deep-brown);"></div><div class="activity-text"><strong>[Seed]</strong> 非侵襲型脳波解析が95%精度に到達 — 自律社会の意思決定支援技術</div><div class="activity-time">2日前</div></div>
-          <div class="activity-item"><div class="activity-dot" style="background:var(--terracotta);"></div><div class="activity-text"><strong>[Need]</strong> Z世代の「意味ある仕事」志向が70%超 — 自律社会の労働価値観</div><div class="activity-time">1週間前</div></div>
-          <div class="activity-item"><div class="activity-dot" style="background:var(--golden);"></div><div class="activity-text"><strong>[Seed]</strong> 量子コンピューティングの商用化加速 — 最適化社会の深化</div><div class="activity-time">2週間前</div></div>
-          <div class="activity-item"><div class="activity-dot" style="background:var(--terracotta);"></div><div class="activity-text"><strong>[Need]</strong> 企業の再生型経営（Regenerative）への転換宣言が急増</div><div class="activity-time">3週間前</div></div>
+        <div style="display:grid; grid-template-columns:1fr auto 1fr; gap:16px; align-items:center; margin-bottom:16px;">
+          <div style="text-align:center; padding:20px; background:#f8f4ef;">
+            <div style="font-size:10px; color:var(--text-muted); letter-spacing:0.08em; margin-bottom:6px;">社会変化速度</div>
+            <div style="font-family:'Hiragino Mincho ProN',serif; font-size:36px; font-weight:700; color:var(--deep-brown);">${socialVelocity}</div>
+            <div style="font-size:11px; color:var(--text-muted);">外部指標</div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:24px; color:var(--terra);">−</div>
+          </div>
+          <div style="text-align:center; padding:20px; background:#f8f4ef;">
+            <div style="font-size:10px; color:var(--text-muted); letter-spacing:0.08em; margin-bottom:6px;">自社準備状況</div>
+            <div style="font-family:'Hiragino Mincho ProN',serif; font-size:36px; font-weight:700; color:var(--deep-brown);">${orgReadiness}</div>
+            <div style="font-size:11px; color:var(--text-muted);">内部指標</div>
+          </div>
+        </div>
+        <div style="text-align:center; padding:16px; background:${adaptationGap > 30 ? 'rgba(192,57,43,0.06)' : 'rgba(45,138,78,0.06)'}; border:1px solid ${adaptationGap > 30 ? 'rgba(192,57,43,0.2)' : 'rgba(45,138,78,0.2)'};">
+          <div style="font-size:10px; color:var(--text-muted); margin-bottom:4px;">適応ギャップ</div>
+          <div style="font-family:'Hiragino Mincho ProN',serif; font-size:42px; font-weight:700; color:${adaptationGap > 30 ? '#c0392b' : '#2d8a4e'};">${adaptationGap}</div>
+          <div style="font-size:11px; color:var(--text-muted);">ギャップが拡大 → 危機 / 縮小 → 健全</div>
+        </div>
+        <div style="margin-top:12px; padding:12px; background:var(--deep-brown); color:white; font-size:12px; line-height:1.7;">
+          <strong style="color:var(--peach);">診断:</strong> 社会変化速度（72）に対して自社準備（38）が大きく遅れている。適応ギャップ34は要注意水準。自律社会への移行シグナルが加速する中、次段階準備への資源配分の大幅引き上げが急務。
+        </div>
+      </div>
+    </div>
+
+    <!-- Signal Sources (拡張版) -->
+    <div class="content-grid">
+      <div class="card">
+        <div class="card-header"><div class="card-title">シグナルスキャン</div><div class="card-badge">3ソース統合</div></div>
+        <div class="card-body">
+          <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <span style="padding:4px 10px; background:var(--deep-brown); color:white; font-size:10px; font-weight:600;">ニュース</span>
+            <span style="padding:4px 10px; background:var(--terra); color:white; font-size:10px; font-weight:600;">投資情報</span>
+            <span style="padding:4px 10px; background:var(--gold); color:var(--deep-brown); font-size:10px; font-weight:600;">技術加速度</span>
+          </div>
+          <div class="activity-feed">
+            <div class="activity-item"><div class="activity-dot" style="background:var(--deep-brown);"></div><div class="activity-text"><strong>[Seed]</strong> 非侵襲型脳波解析が95%精度 — 自律社会の意思決定支援</div><div class="activity-time">2日前</div></div>
+            <div class="activity-item"><div class="activity-dot" style="background:var(--terra);"></div><div class="activity-text"><strong>[投資]</strong> 再生型農業スタートアップへのVC投資が前年比3.2倍 — 自然社会の萌芽</div><div class="activity-time">5日前</div></div>
+            <div class="activity-item"><div class="activity-dot" style="background:var(--golden);"></div><div class="activity-text"><strong>[加速]</strong> AIエージェント性能が18ヶ月で10倍に — 指数関数的加速</div><div class="activity-time">1週間前</div></div>
+            <div class="activity-item"><div class="activity-dot" style="background:var(--terracotta);"></div><div class="activity-text"><strong>[Need]</strong> Z世代「意味ある仕事」志向が70%超 — 自律社会の価値観</div><div class="activity-time">1週間前</div></div>
+            <div class="activity-item"><div class="activity-dot" style="background:var(--terra);"></div><div class="activity-text"><strong>[投資]</strong> ウェルビーイング関連SaaSへのシリーズB投資が急増</div><div class="activity-time">2週間前</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">技術加速度モニター</div><div class="card-badge">指数関数的変化</div></div>
+        <div class="card-body">
+          <div style="font-size:12px; color:var(--text-secondary); line-height:1.7; margin-bottom:16px;">
+            SINIC理論のSeed型イノベーション循環において、技術進展の<strong>加速度</strong>が社会段階移行の速度を決定する。
+          </div>
+          ${[
+            { name: 'AI/自律エージェント', speed: 92, phase: '自律社会' },
+            { name: '量子コンピューティング', speed: 68, phase: '最適化深化' },
+            { name: 'バイオ・生態系技術', speed: 45, phase: '自然社会' },
+            { name: 'ニューロサイエンス', speed: 58, phase: '自律社会' },
+            { name: '循環型素材', speed: 52, phase: '自然社会' },
+          ].map(t => `
+            <div style="margin-bottom:10px;">
+              <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:3px;">
+                <span style="font-weight:600;">${t.name}</span>
+                <span style="font-size:10px; color:var(--text-muted);">${t.phase}</span>
+              </div>
+              <div style="height:6px; background:#f3ede6; overflow:hidden;">
+                <div style="height:100%; width:${t.speed}%; background:${t.speed > 80 ? 'var(--deep-brown)' : t.speed > 60 ? 'var(--terra)' : 'var(--gold)'};"></div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- Bali Insight -->
+    <div class="card" style="border-top:3px solid var(--gold);">
+      <div class="card-body" style="background:var(--deep-brown); color:white; padding:20px 24px;">
+        <div style="font-size:10px; letter-spacing:0.12em; color:var(--peach); margin-bottom:8px;">FIELD INSIGHT — バリ島ウブド</div>
+        <div style="font-family:'Hiragino Mincho ProN',serif; font-size:15px; font-weight:700; margin-bottom:10px;">「自然社会」は抽象概念ではなく、いまも実在する生活世界である</div>
+        <div style="font-size:12px; color:rgba(255,255,255,0.85); line-height:1.8;">
+          トリ・ヒタ・カラナ（人と神と自然の調和）は哲学ではなく、住まいの向き・身体動作・経済行為に至るまで社会に実装されている。SUBAKの水利システムは「公平な分配」を生態学的制約から自然に導いている。この「哲学の社会実装」こそが、SINIC理論が描く自然社会の先行モデルである。
         </div>
       </div>
     </div>
