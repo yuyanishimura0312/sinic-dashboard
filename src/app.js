@@ -139,6 +139,8 @@ function render() {
       else if (page === 'portfolio') main.innerHTML = renderPortfolio();
       else if (page === 'circulation') main.innerHTML = renderCirculation();
       else if (page === 'phase') main.innerHTML = renderPhase();
+      else if (page === 'org') main.innerHTML = renderOrgLayer();
+      else if (page === 'sense') main.innerHTML = renderSenseLayer();
       else if (page === 'about') main.innerHTML = renderAbout();
       else main.innerHTML = renderPlaceholder(item.textContent.trim());
     });
@@ -618,6 +620,236 @@ function renderPlaceholder(title) {
       <div style="font-size:48px; color:var(--border); margin-bottom:16px;">◉</div>
       <div style="font-size:14px; color:var(--text-muted);">Coming Soon</div>
     </div></div>
+  `;
+}
+
+function renderOrgLayer() {
+  const allocation = { optimize: 64, prepare: 22, envision: 14 };
+  const recommended = { optimize: 50, prepare: 30, envision: 20 };
+  const capabilities = [
+    { name: 'デジタル・トランスフォーメーション', current: 78, needed: 85 },
+    { name: '分散型意思決定', current: 35, needed: 70 },
+    { name: 'エコシステム構築力', current: 52, needed: 80 },
+    { name: '非財務価値の測定', current: 28, needed: 65 },
+    { name: '身体知の組織的活用', current: 22, needed: 60 },
+  ];
+
+  return `
+    <div class="page-header">
+      <div>
+        <div class="page-title">組織構造層</div>
+        <div class="page-subtitle">Organizational Architecture — 社会段階の移行に連動する変換装置</div>
+      </div>
+    </div>
+
+    <!-- Three-axis allocation -->
+    <div class="content-grid">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">三軸資源配分バランス</div>
+          <div class="card-badge">動的調整</div>
+        </div>
+        <div class="card-body">
+          <div style="margin-bottom:20px;">
+            <div style="font-size:11px; color:var(--text-muted); margin-bottom:6px;">現在の配分</div>
+            <div style="display:flex; height:32px; overflow:hidden; border:1px solid var(--border);">
+              <div style="width:${allocation.optimize}%; background:var(--deep-brown); display:flex; align-items:center; justify-content:center; color:white; font-size:11px; font-weight:600;">${allocation.optimize}%</div>
+              <div style="width:${allocation.prepare}%; background:var(--terra); display:flex; align-items:center; justify-content:center; color:white; font-size:11px; font-weight:600;">${allocation.prepare}%</div>
+              <div style="width:${allocation.envision}%; background:var(--gold); display:flex; align-items:center; justify-content:center; color:var(--deep-brown); font-size:11px; font-weight:600;">${allocation.envision}%</div>
+            </div>
+          </div>
+          <div style="margin-bottom:20px;">
+            <div style="font-size:11px; color:var(--text-muted); margin-bottom:6px;">推奨配分（社会段階移行進行度に基づく）</div>
+            <div style="display:flex; height:32px; overflow:hidden; border:1px dashed var(--border);">
+              <div style="width:${recommended.optimize}%; background:rgba(122,64,51,0.15); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; color:var(--deep-brown);">${recommended.optimize}%</div>
+              <div style="width:${recommended.prepare}%; background:rgba(220,135,102,0.15); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; color:var(--terra);">${recommended.prepare}%</div>
+              <div style="width:${recommended.envision}%; background:rgba(240,166,113,0.15); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; color:var(--amber);">${recommended.envision}%</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:16px; font-size:11px; color:var(--text-muted);">
+            <span>■ 現段階最適化</span><span>■ 次段階準備</span><span>■ 遠未来構想</span>
+          </div>
+          <div style="margin-top:16px; padding:12px; background:#f8f4ef; border-left:3px solid var(--terra); font-size:12px; color:var(--text-secondary); line-height:1.7;">
+            <strong style="color:var(--deep-brown);">診断:</strong> 次段階準備の配分が推奨値（30%）に対して22%と不足。自律社会への移行シグナルが加速しているため、次四半期に8%の重心移動を推奨。
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">組織能力ギャップ分析</div>
+          <div class="card-badge">段階別</div>
+        </div>
+        <div class="card-body">
+          ${capabilities.map(c => `
+            <div style="margin-bottom:14px;">
+              <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:4px;">
+                <span style="font-weight:600; color:var(--text);">${c.name}</span>
+                <span style="color:${c.current >= c.needed ? '#2d8a4e' : 'var(--terra)'}; font-weight:600;">${c.current}/${c.needed}</span>
+              </div>
+              <div style="position:relative; height:8px; background:#f3ede6;">
+                <div style="position:absolute; height:100%; width:${c.current}%; background:var(--terra);"></div>
+                <div style="position:absolute; height:100%; width:2px; left:${c.needed}%; background:var(--deep-brown);"></div>
+              </div>
+              <div style="display:flex; justify-content:space-between; font-size:9px; color:var(--text-muted); margin-top:2px;">
+                <span>現在</span><span>必要水準 →</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- Probe Portfolio -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">バックキャスティング・ポートフォリオ</div>
+        <div class="card-badge">${probes.length} Probes</div>
+      </div>
+      <div class="card-body">
+        <div style="text-align:center; padding:8px 0 16px; font-size:13px; color:var(--deep-brown); font-weight:700;">
+          ◀◀◀ 自然社会ビジョンから現在へ逆算 ◀◀◀
+        </div>
+        <div class="probe-list">
+          ${probes.map(p => `
+            <div class="probe-card">
+              <div class="probe-badge">${p.id}</div>
+              <div class="probe-info">
+                <div class="probe-name">${p.name}</div>
+                <div class="probe-desc">${p.desc}</div>
+              </div>
+              <div class="probe-scores">
+                <div class="score-dot ${p.scores.phase}" title="社会段階適合度">適</div>
+                <div class="score-dot ${p.scores.learn}" title="学習貢献度">学</div>
+                <div class="score-dot ${p.scores.translate}" title="翻訳可能性">訳</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderSenseLayer() {
+  const dialogSessions = [
+    { date: '4/18', topic: 'パーパス再考：自然社会における存在意義', participants: 18, departments: 6, depth: 'high' },
+    { date: '4/4', topic: '翻訳の困難：抽象ビジョンと現場実践のギャップ', participants: 12, departments: 4, depth: 'mid' },
+    { date: '3/21', topic: 'バリFTの身体知を事業にどう接続するか', participants: 22, departments: 7, depth: 'high' },
+    { date: '3/7', topic: '応答としての経営判断：次四半期の方向性', participants: 15, departments: 5, depth: 'mid' },
+  ];
+
+  const purposeEvolution = [
+    { quarter: '2025 Q2', words: '効率性、最適化、競争力、成長' },
+    { quarter: '2025 Q4', words: '共生、関係性、意味、自律' },
+    { quarter: '2026 Q1', words: '応答、盾、身体知、自然社会' },
+    { quarter: '2026 Q2', words: '循環、創発、翻訳、協調' },
+  ];
+
+  return `
+    <div class="page-header">
+      <div>
+        <div class="page-title">意味生成層</div>
+        <div class="page-subtitle">Sensemaking Layer — 未来への責任ある応答を生成する創造装置</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-primary">+ 新しい問いを作成</button>
+      </div>
+    </div>
+
+    <div class="content-grid">
+      <!-- Correspondence -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">未来への応答（Correspondence）</div>
+          <div class="card-badge">${correspondences.length} Questions</div>
+        </div>
+        <div class="card-body">
+          <div style="padding:12px; background:var(--deep-brown); color:white; margin-bottom:16px; font-size:12px; line-height:1.7;">
+            <strong style="color:var(--peach);">応答の哲学:</strong> 受動的な「対応（Response）」ではなく、避け難い未来に対して責任を持って向き合う「応答（Correspondence）」。
+          </div>
+          <div class="correspondence-list">
+            ${correspondences.map(c => `
+              <div class="correspondence-item">
+                <div class="correspondence-question">${c.question}</div>
+                <div class="response-count">${c.responses.length}件の応答</div>
+                ${c.responses.slice(0, 1).map(r => `
+                  <div class="response-preview"><span class="response-author">${r.author}</span><span>${r.text.slice(0, 80)}...</span></div>
+                `).join('')}
+                <button class="add-response-btn">+ 応答を追加する</button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+
+      <!-- Dialogue Sessions -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">意味生成対話セッション</div>
+          <div class="card-badge">月2回実施</div>
+        </div>
+        <div class="card-body">
+          ${dialogSessions.map(s => `
+            <div style="display:flex; gap:12px; align-items:center; padding:12px 0; border-bottom:1px solid var(--border);">
+              <div style="width:48px; text-align:center; font-size:12px; font-weight:700; color:var(--deep-brown);">${s.date}</div>
+              <div style="flex:1;">
+                <div style="font-size:13px; font-weight:600; color:var(--text);">${s.topic}</div>
+                <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">
+                  参加${s.participants}名 / ${s.departments}部門横断
+                </div>
+              </div>
+              <div style="width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; ${s.depth === 'high' ? 'background:rgba(45,138,78,0.1); color:#2d8a4e;' : 'background:rgba(240,166,113,0.15); color:var(--amber);'}">${s.depth === 'high' ? '深' : '中'}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- Purpose Evolution -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">パーパス進化マップ</div>
+        <div class="card-badge">言語の変遷</div>
+      </div>
+      <div class="card-body">
+        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:0;">
+          ${purposeEvolution.map((p, i) => `
+            <div style="padding:16px; text-align:center; border-right:${i < 3 ? '1px solid var(--border)' : 'none'}; ${i === 3 ? 'background:rgba(122,64,51,0.04);' : ''}">
+              <div style="font-size:11px; font-weight:600; color:var(--warm); margin-bottom:8px;">${p.quarter}</div>
+              <div style="font-size:13px; color:var(--text-secondary); line-height:1.6;">${p.words.split('、').map(w => `<span style="display:inline-block; padding:2px 8px; margin:2px; background:#f3ede6; font-size:11px; color:var(--deep-brown);">${w}</span>`).join('')}</div>
+            </div>
+          `).join('')}
+        </div>
+        <div style="text-align:center; padding:12px 0 0; font-size:12px; color:var(--text-muted);">
+          → パーパスを語る言葉が「効率・競争」から「応答・循環・共生」へ変遷
+        </div>
+      </div>
+    </div>
+
+    <!-- Sensemaking KPI -->
+    <div class="card" style="border-top:3px solid var(--golden);">
+      <div class="card-header">
+        <div class="card-title">意味生成活性度スコア</div>
+        <div style="font-family:'Hiragino Mincho ProN',serif; font-size:28px; font-weight:700; color:var(--deep-brown);">4.2<span style="font-size:14px; font-weight:400; color:var(--text-muted);">回/月</span></div>
+      </div>
+      <div class="card-body">
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
+          <div style="text-align:center; padding:16px; background:#f8f4ef;">
+            <div style="font-size:24px; font-weight:700; color:var(--deep-brown);">68%</div>
+            <div style="font-size:11px; color:var(--text-muted);">参加多様性</div>
+          </div>
+          <div style="text-align:center; padding:16px; background:#f8f4ef;">
+            <div style="font-size:24px; font-weight:700; color:var(--deep-brown);">45%</div>
+            <div style="font-size:11px; color:var(--text-muted);">自分語り率</div>
+          </div>
+          <div style="text-align:center; padding:16px; background:#f8f4ef;">
+            <div style="font-size:24px; font-weight:700; color:var(--deep-brown);">2</div>
+            <div style="font-size:11px; color:var(--text-muted);">パーパス再定義（半期）</div>
+          </div>
+        </div>
+      </div>
+    </div>
   `;
 }
 
