@@ -100,7 +100,10 @@ function render() {
           <div class="nav-section">
             <div class="nav-section-title">ツール</div>
             <div class="nav-item" data-page="signal">
-              <span class="nav-icon">◇</span> シグナルスキャン
+              <span class="nav-icon">◈</span> シグナルスキャン
+            </div>
+            <div class="nav-item" data-page="dynamicKPI">
+              <span class="nav-icon">◬</span> ダイナミックKPI
             </div>
             <div class="nav-item" data-page="activity">
               <span class="nav-icon">▤</span> アクティビティ
@@ -114,7 +117,7 @@ function render() {
           </div>
         </nav>
         <div class="sidebar-footer">
-          SINIC循環経営モデル v1.0<br>
+          SINIC循環経営モデル v2.0<br>
           特定非営利活動法人ミラツク
         </div>
       </aside>
@@ -142,6 +145,8 @@ function render() {
       else if (page === 'org') main.innerHTML = renderOrgLayer();
       else if (page === 'sense') main.innerHTML = renderSenseLayer();
       else if (page === 'about') main.innerHTML = renderAbout();
+      else if (page === 'signal') main.innerHTML = renderSignalScan();
+      else if (page === 'dynamicKPI') main.innerHTML = renderDynamicKPI();
       else main.innerHTML = renderPlaceholder(item.textContent.trim());
     });
   });
@@ -549,6 +554,44 @@ function renderPortfolio() {
 }
 
 function renderCirculation() {
+  const healthData = [
+    {
+      name: 'Seed-Need循環', value: 65, status: 'healthy',
+      healthy: '技術トレンドと社会課題が接続されて議論',
+      stagnant: '技術部門と事業部門が別々の言語を話す'
+    },
+    {
+      name: '段階移行循環', value: 45, status: 'warning',
+      healthy: '社会段階の診断が資源配分の議論に影響',
+      stagnant: '外部環境の変化が戦略に反映されるのに2年以上'
+    },
+    {
+      name: '翻訳循環', value: 58, status: 'healthy',
+      healthy: '現場のProbeがパーパスの言葉を更新',
+      stagnant: 'パーパスが3年以上変わっていない'
+    },
+    {
+      name: '共創循環', value: 72, status: 'healthy',
+      healthy: '外部ステークホルダーとの対話が戦略に影響',
+      stagnant: '外部との接点が営業・IR・PRのみに限定'
+    },
+    {
+      name: '身体知循環', value: 38, status: 'stagnant',
+      healthy: 'FTや場の体験が組織の感受性を定期的に更新',
+      stagnant: '身体的体験より資料・会議による情報処理が優先'
+    },
+  ];
+
+  const statusDot = (status) => {
+    const styles = {
+      healthy: 'background:#2d8a4e;',
+      warning: 'background:var(--amber);',
+      stagnant: 'background:#c0392b;'
+    };
+    const labels = { healthy: '健全', warning: '警告', stagnant: '停滞' };
+    return `<span style="display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600; color:${status === 'healthy' ? '#2d8a4e' : status === 'warning' ? 'var(--amber)' : '#c0392b'};"><span style="width:8px;height:8px;border-radius:50%;flex-shrink:0;${styles[status]}"></span>${labels[status]}</span>`;
+  };
+
   return `
     <div class="page-header">
       <div>
@@ -577,6 +620,42 @@ function renderCirculation() {
           <span style="font-size:13px; font-weight:700; color:var(--deep-brown); width:40px; text-align:right;">${c.value}%</span>
         </div>
       `).join('')}
+    </div>
+
+    <!-- 健全性診断テーブル -->
+    <div class="card" style="margin-top:24px; border-top:3px solid var(--deep-brown);">
+      <div class="card-header">
+        <div class="card-title">健全性診断テーブル</div>
+        <div class="card-badge">五循環評価</div>
+      </div>
+      <div class="card-body" style="padding:0;">
+        <table style="width:100%; border-collapse:collapse; font-size:12px;">
+          <thead>
+            <tr style="background:var(--deep-brown); color:white;">
+              <th style="padding:10px 14px; text-align:left; font-size:11px; letter-spacing:0.05em; font-weight:600;">循環</th>
+              <th style="padding:10px 14px; text-align:left; font-size:11px; letter-spacing:0.05em; font-weight:600;">健全な状態のサイン</th>
+              <th style="padding:10px 14px; text-align:left; font-size:11px; letter-spacing:0.05em; font-weight:600;">停滞のサイン</th>
+              <th style="padding:10px 14px; text-align:center; font-size:11px; letter-spacing:0.05em; font-weight:600;">現状</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${healthData.map((h, i) => `
+              <tr style="border-bottom:1px solid var(--border); background:${i % 2 === 0 ? 'white' : '#faf6f0'};">
+                <td style="padding:12px 14px; font-weight:700; color:var(--deep-brown); white-space:nowrap;">${h.name}</td>
+                <td style="padding:12px 14px; color:var(--text-secondary); line-height:1.6;">${h.healthy}</td>
+                <td style="padding:12px 14px; color:var(--text-muted); line-height:1.6;">${h.stagnant}</td>
+                <td style="padding:12px 14px; text-align:center;">${statusDot(h.status)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 身体知循環の特別性 -->
+    <div style="margin-top:20px; padding:20px 24px; background:rgba(122,64,51,0.06); border:1px solid rgba(122,64,51,0.2); border-left:4px solid var(--deep-brown);">
+      <div style="font-size:11px; font-weight:700; color:var(--deep-brown); letter-spacing:0.1em; margin-bottom:10px;">身体知循環の特別な位置</div>
+      <div style="font-size:13px; color:var(--text-secondary); line-height:1.9;">五循環の中で身体知循環が「特別な位置」を持つのは、この循環だけが「全層への浸透」という性質を持つからである。他の四循環は特定の層間を往復するが、身体知循環は一つの層に閉じず、意味生成層を起点として社会段階層・組織構造層の双方を同時に変容させる。</div>
     </div>
   `;
 }
@@ -634,6 +713,33 @@ function renderPhase() {
         </div>
         <div style="margin-top:12px; padding:12px; background:var(--deep-brown); color:white; font-size:12px; line-height:1.7;">
           <strong style="color:var(--peach);">診断:</strong> 社会変化速度（72）に対して自社準備（38）が大きく遅れている。適応ギャップ34は要注意水準。自律社会への移行シグナルが加速する中、次段階準備への資源配分の大幅引き上げが急務。
+        </div>
+      </div>
+    </div>
+
+    <!-- 社会段階層の設計原則：知覚の三段階 -->
+    <div class="card" style="margin-bottom:16px; border-top:3px solid var(--amber);">
+      <div class="card-header">
+        <div class="card-title">社会段階層の設計原則：知覚の三段階</div>
+        <div class="card-badge">認識論的基盤</div>
+      </div>
+      <div class="card-body">
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px;">
+          <div style="padding:16px; border:1px solid var(--border); border-top:3px solid var(--deep-brown);">
+            <div style="font-size:10px; font-weight:700; color:var(--deep-brown); letter-spacing:0.08em; margin-bottom:6px;">① データ的知覚</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">シグナルの四軸を定量的にスキャンし、段階移行のスコアを算出する</div>
+          </div>
+          <div style="padding:16px; border:1px solid var(--border); border-top:3px solid var(--amber);">
+            <div style="font-size:10px; font-weight:700; color:var(--deep-brown); letter-spacing:0.08em; margin-bottom:6px;">② 構造的知覚</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">個別のシグナルを「社会のカレンダー」上にマッピングし、移行の共鳴パターンを読む</div>
+          </div>
+          <div style="padding:16px; border:1px solid var(--border); border-top:3px solid var(--terracotta);">
+            <div style="font-size:10px; font-weight:700; color:var(--deep-brown); letter-spacing:0.08em; margin-bottom:6px;">③ 身体的知覚</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">FTや場の体験を通じて、現在の社会段階の「重力」と次の段階の「引力」を感得する</div>
+          </div>
+        </div>
+        <div style="padding:12px 16px; background:#f8f4ef; border-left:3px solid var(--terracotta); font-size:12px; color:var(--text-secondary); line-height:1.7; font-style:italic;">
+          三つの知覚が重なったとき、組織は最も確かな段階診断を持つことができる。
         </div>
       </div>
     </div>
@@ -783,6 +889,34 @@ function renderOrgLayer() {
               </div>
             </div>
           `).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- スバック・システムから抽出した経営ガバナンスの原理 -->
+    <div class="card" style="margin-bottom:16px; border-top:3px solid var(--terracotta);">
+      <div class="card-header">
+        <div class="card-title">スバック・システムから抽出した経営ガバナンスの原理</div>
+        <div class="card-badge">バリ島フィールド知見</div>
+      </div>
+      <div class="card-body">
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:20px;">
+          <div style="padding:16px; background:#f8f4ef; border-left:3px solid var(--deep-brown);">
+            <div style="font-size:11px; font-weight:700; color:var(--deep-brown); margin-bottom:8px;">「制約の共有化」</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">競争ではなく、生態学的・社会的制約を共有することで、共同意思決定の動機を設計する</div>
+          </div>
+          <div style="padding:16px; background:#f8f4ef; border-left:3px solid var(--amber);">
+            <div style="font-size:11px; font-weight:700; color:var(--deep-brown); margin-bottom:8px;">「分散ガバナンス」</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">中央集権的な命令系統ではなく、ラテラルな合意ネットワークで組織を運営する</div>
+          </div>
+          <div style="padding:16px; background:#f8f4ef; border-left:3px solid var(--terracotta);">
+            <div style="font-size:11px; font-weight:700; color:var(--deep-brown); margin-bottom:8px;">「儀礼的更新」</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">定期的な「儀礼」（社内対話・戦略合宿・振り返り実践）によって、暗黙の合意を更新し続ける仕組みを作る</div>
+          </div>
+        </div>
+        <div style="padding:16px 20px; background:#f8f4ef; border-left:4px solid var(--terracotta); font-style:italic;">
+          <div style="font-size:13px; color:var(--text-secondary); line-height:1.9;">「近代化に適応する必要があっても、哲学そのものを犠牲にするわけではありません。耕し方にトラクターを使っても、哲学は残っています。生産性が問題なのではなく、問題は化学物質です」</div>
+          <div style="font-size:11px; color:var(--text-muted); margin-top:8px;">— 現地ガイド、バリ島スバック農地 2025年11月</div>
         </div>
       </div>
     </div>
@@ -937,6 +1071,65 @@ function renderSenseLayer() {
         </div>
       </div>
     </div>
+
+    <!-- 応答ジャーナル -->
+    <div class="card" style="margin-top:20px; border-top:3px solid var(--deep-brown);">
+      <div class="card-header">
+        <div class="card-title">応答ジャーナル</div>
+        <div class="card-badge">2025年12月</div>
+      </div>
+      <div class="card-body">
+        <div style="font-size:11px; color:var(--text-muted); margin-bottom:16px; font-weight:600; letter-spacing:0.05em;">組織構造層の探索実験（Probe）振り返り</div>
+        ${[
+          {
+            q: 'Q1. 今日の社会シグナルに対して、自分の組織はどう感じたか',
+            a: '生成AIの業務実装が全社で加速しているが、何かを失っているような感覚もある。効率化への「対応」はできているが、自律社会における私たちの役割への「応答」がまだできていない。'
+          },
+          {
+            q: 'Q2. 今日の実践から、組織のパーパスに関してどんな問いが浮かんだか',
+            a: '「人の仕事をAIが補完する」のか「AIの仕事を人が意味づける」のか。どちらの方向を目指しているのかが、組織内で合意されていない。'
+          },
+          {
+            q: 'Q3. バリ/喜界島の体験を思い出したとき、何がズレていると感じるか',
+            a: 'バリのスバック・システムは「全員が同時に動く」ことで均衡が保たれていた。私たちの組織は、誰かが動けば誰かが止まる、ゼロサム的な構造を持っている。'
+          }
+        ].map(item => `
+          <div style="margin-bottom:16px;">
+            <div style="font-size:12px; font-weight:700; color:var(--deep-brown); margin-bottom:6px;">${item.q}</div>
+            <div style="padding:12px 16px; background:#f8f4ef; border-left:3px solid var(--terracotta); font-size:12px; color:var(--text-secondary); line-height:1.8;">→ ${item.a}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- パーパス再定義プロセス -->
+    <div class="card" style="margin-top:20px; border-top:3px solid var(--amber);">
+      <div class="card-header">
+        <div class="card-title">パーパス再定義プロセス</div>
+        <div class="card-badge">三層横断</div>
+      </div>
+      <div class="card-body">
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; border:1px solid var(--border);">
+          ${[
+            { step: 'Step 1', layer: '社会段階層', color: 'var(--deep-brown)', desc: '移行マップを参照し、次段階において社会が何を必要とするかを確認' },
+            { step: 'Step 2', layer: '組織構造層', color: 'var(--amber)', desc: 'Probe実践の学びを集約し、現場がどんな問いに直面しているかを確認' },
+            { step: 'Step 3', layer: '意味生成層', color: 'var(--terracotta)', desc: '「なぜ私たちはこれをするのか」という問いに改めて向き合い、言葉を更新' },
+          ].map((s, i) => `
+            <div style="padding:20px; border-right:${i < 2 ? '1px solid var(--border)' : 'none'}; text-align:center;">
+              <div style="font-size:10px; font-weight:700; color:${s.color}; letter-spacing:0.1em; margin-bottom:4px;">${s.step}</div>
+              <div style="font-size:12px; font-weight:700; color:var(--deep-brown); margin-bottom:8px; font-family:'Hiragino Mincho ProN',serif;">${s.layer}</div>
+              <div style="font-size:11px; color:var(--text-secondary); line-height:1.7;">${s.desc}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- Tjok Gde王子の引用 -->
+    <div style="margin-top:20px; padding:20px 24px; background:#f8f4ef; border-left:4px solid var(--terracotta); font-style:italic;">
+      <div style="font-family:'Hiragino Mincho ProN',serif; font-size:14px; color:var(--text-secondary); line-height:1.9; margin-bottom:10px;">「明確なメソッドはない。唯一永遠なものは変化であり、変化に適応しながら精神とのつながりを失わないことが重要です」</div>
+      <div style="font-size:11px; color:var(--text-muted);">— Tjok Gde氏（ウブド王子）、バリ島王族対話 2025年11月</div>
+    </div>
   `;
 }
 
@@ -1037,9 +1230,270 @@ function renderAbout() {
       </div>
     </div>
 
+    <!-- 応答する組織の5つの実践指針 -->
+    <div class="card" style="margin-bottom:20px; border-top:3px solid var(--terracotta);">
+      <div class="card-header">
+        <div class="card-title">応答する組織の5つの実践指針</div>
+        <div class="card-badge">v2.0 新規追加</div>
+      </div>
+      <div class="card-body">
+        ${[
+          { num: 1, title: '社会の暦を読む', desc: 'SINIC社会段階モデルという「方向性を持つ地図」を経営の前提として使いこなす' },
+          { num: 2, title: '適応ギャップを直視する', desc: '社会変化速度と自組織準備度の差分を動的に測定し、隠蔽しない' },
+          { num: 3, title: 'スバック・システムの原理を実装する', desc: '競争より制約の共有を選び、分散ガバナンスと公平性の設計を優先する' },
+          { num: 4, title: '身体知を組織に流す', desc: '定期的なフィールドトリップと儀礼的対話によって、データでは届かない感受性を更新し続ける' },
+          { num: 5, title: '問いを蓄積する', desc: '応答ジャーナルと意味生成の場を制度として設計し、メソッドなき継承の文化を育てる' },
+        ].map(p => `
+          <div style="display:flex; gap:16px; padding:14px 0; border-bottom:1px solid var(--border); align-items:flex-start;">
+            <div style="width:32px; height:32px; border-radius:50%; background:var(--deep-brown); color:white; display:flex; align-items:center; justify-content:center; font-family:'Hiragino Mincho ProN',serif; font-size:14px; font-weight:700; flex-shrink:0;">${p.num}</div>
+            <div>
+              <div style="font-size:13px; font-weight:700; color:var(--deep-brown); margin-bottom:4px;">${p.title}</div>
+              <div style="font-size:12px; color:var(--text-secondary); line-height:1.7;">——${p.desc}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
     <div style="margin-top:20px; padding:16px; text-align:center; font-size:11px; color:var(--text-muted);">
-      SINIC経営ダッシュボード v1.0 — 特定非営利活動法人ミラツク / 株式会社ヒューマンルネッサンス研究所<br>
+      SINIC経営ダッシュボード v2.0 — 特定非営利活動法人ミラツク / 株式会社ヒューマンルネッサンス研究所<br>
       <a href="https://yuyanishimura0312.github.io/sinic-dashboard/" style="color:var(--terracotta);">https://yuyanishimura0312.github.io/sinic-dashboard/</a>
+    </div>
+  `;
+}
+
+function renderSignalScan() {
+  const signals = {
+    seed: [
+      { title: '非侵襲型脳波解析が95%精度を達成', source: 'Nature Neuroscience', date: '2025-11-14', tag: '自律社会' },
+      { title: 'バイオファブリケーション素材コストが5年で1/10に', source: 'MIT Technology Review', date: '2025-10-28', tag: '自然社会' },
+      { title: '量子コンピューティングの実用化特許出願数が前年比2.4倍', source: '特許庁データ', date: '2025-10-05', tag: '最適化深化' },
+    ],
+    need: [
+      { title: 'Z世代の「意味ある仕事」志向が72%超 — 自律社会の価値観', source: 'Deloitte Global Survey', date: '2025-11-20', tag: '自律社会' },
+      { title: 'EU AI規制法の施行が企業ガバナンスに構造的変化', source: 'EU Official Journal', date: '2025-11-03', tag: '規制変化' },
+      { title: '都市部ミレニアル世代の「接続断ち」ライフスタイルが拡大', source: 'Pew Research', date: '2025-10-17', tag: '自然社会' },
+    ],
+    investment: [
+      { title: '再生型農業スタートアップへのVC投資が前年比3.2倍', source: 'Pitchbook', date: '2025-11-18', tag: '自然社会' },
+      { title: 'ウェルビーイング関連SaaSへのシリーズB投資が急増', source: 'Crunchbase', date: '2025-11-10', tag: '自律社会' },
+      { title: '日本政府が「自律技術研究開発」に3,000億円追加投資', source: '内閣府', date: '2025-10-30', tag: '政策' },
+    ],
+    acceleration: [
+      { title: 'AIエージェント性能が18ヶ月で10倍 — 指数関数的加速', source: 'Stanford HAI', date: '2025-11-22', tag: '自律社会' },
+      { title: '太陽光発電コストが2020年比で再び1/3に低下', source: 'IRENA', date: '2025-11-05', tag: '自然社会' },
+      { title: 'LLMのトークン処理コストが四半期毎に50%低下継続', source: 'Anthropic Research', date: '2025-10-22', tag: '加速度' },
+    ],
+  };
+
+  const axes = [
+    {
+      key: 'seed', label: 'Seed型', color: 'var(--deep-brown)',
+      desc: '科学論文・特許・研究開発投資動向',
+      question: '「どの技術が次の社会段階のインフラになるか」',
+      items: signals.seed
+    },
+    {
+      key: 'need', label: 'Need型', color: 'var(--terracotta)',
+      desc: '社会課題・規制変化・ライフスタイル変容',
+      question: '「社会がどの方向のニーズを強めているか」',
+      items: signals.need
+    },
+    {
+      key: 'investment', label: '投資情報', color: 'var(--amber)',
+      desc: 'VC動向・政策投資・M&A',
+      question: '「市場が『次』として信じている段階はどこか」',
+      items: signals.investment
+    },
+    {
+      key: 'acceleration', label: '技術加速度', color: 'var(--golden)',
+      desc: '性能ベンチマーク・コスト曲線・普及速度',
+      question: '「変化の速度が移行タイミングに何を示しているか」',
+      items: signals.acceleration
+    },
+  ];
+
+  return `
+    <div class="page-header">
+      <div>
+        <div class="page-title">シグナルスキャン</div>
+        <div class="page-subtitle">四軸シグナル収集システム — 社会段階移行の定量的・構造的知覚</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-secondary">エクスポート</button>
+        <button class="btn btn-primary">+ シグナル追加</button>
+      </div>
+    </div>
+
+    <!-- 四軸サマリー -->
+    <div class="kpi-grid" style="margin-bottom:24px;">
+      ${axes.map(a => `
+        <div class="kpi-overview-card" style="border-top-color:${a.color};">
+          <div class="kpi-label">${a.label}</div>
+          <div class="kpi-value">${a.items.length}<span class="kpi-unit">件</span></div>
+          <div style="font-size:10px; color:var(--text-muted); margin-top:4px;">${a.desc}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- 四軸テーブル -->
+    ${axes.map(a => `
+      <div class="card" style="margin-bottom:20px; border-top:3px solid ${a.color};">
+        <div class="card-header">
+          <div>
+            <div class="card-title">${a.label}シグナル</div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${a.desc}</div>
+          </div>
+          <div class="card-badge" style="background:rgba(122,64,51,0.08);">${a.items.length}件</div>
+        </div>
+        <div style="padding:12px 20px; background:#f8f4ef; border-bottom:1px solid var(--border); font-size:12px; color:var(--text-secondary);">
+          <span style="font-weight:700; color:var(--deep-brown);">読み解きの問い:</span> ${a.question}
+        </div>
+        <div class="card-body" style="padding:0;">
+          <table style="width:100%; border-collapse:collapse; font-size:12px;">
+            <thead>
+              <tr style="background:var(--deep-brown); color:white;">
+                <th style="padding:8px 14px; text-align:left; font-size:11px; font-weight:600;">シグナル内容</th>
+                <th style="padding:8px 14px; text-align:left; font-size:11px; font-weight:600;">ソース</th>
+                <th style="padding:8px 14px; text-align:center; font-size:11px; font-weight:600;">日付</th>
+                <th style="padding:8px 14px; text-align:center; font-size:11px; font-weight:600;">関連段階</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${a.items.map((item, i) => `
+                <tr style="border-bottom:1px solid var(--border); background:${i % 2 === 0 ? 'white' : '#faf6f0'};">
+                  <td style="padding:12px 14px; color:var(--text); font-weight:600; line-height:1.5;">${item.title}</td>
+                  <td style="padding:12px 14px; color:var(--text-muted); font-size:11px;">${item.source}</td>
+                  <td style="padding:12px 14px; text-align:center; color:var(--text-muted); font-size:11px; white-space:nowrap;">${item.date}</td>
+                  <td style="padding:12px 14px; text-align:center;">
+                    <span style="padding:3px 8px; background:rgba(122,64,51,0.08); color:var(--deep-brown); font-size:10px; font-weight:600;">${item.tag}</span>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `).join('')}
+  `;
+}
+
+function renderDynamicKPI() {
+  const socialVelocity = 72;
+  const orgReadiness = 38;
+  const adaptationGap = socialVelocity - orgReadiness;
+
+  const kpiTable = [
+    { category: '社会段階知覚スコア', layer: '社会段階層', target: '四軸シグナルの検知数・質・構造的読み解き', freq: '月次', value: 24, max: 50 },
+    { category: '移行進行度', layer: '社会段階層', target: '現段階（最適化社会）終焉への接近度', freq: '四半期', value: 62, max: 100 },
+    { category: '組織準備度', layer: '組織構造層', target: '次段階ケイパビリティの充足度', freq: '四半期', value: orgReadiness, max: 100 },
+    { category: '適応ギャップ', layer: '層横断', target: '社会変化速度 – 組織準備度（主要KPI）', freq: '四半期', value: adaptationGap, max: 60 },
+    { category: 'Probeポートフォリオ', layer: '組織構造層', target: '三時間軸の分散度・Horizon 2/3比率', freq: '月次', value: 36, max: 100 },
+    { category: '意味生成活性度', layer: '意味生成層', target: '応答ジャーナル参加率・問い多様性指数', freq: '月次', value: 45, max: 100 },
+    { category: '五循環健全スコア', layer: '全層横断', target: '五循環それぞれの活動頻度・深度・停滞指数', freq: '四半期', value: 55, max: 100 },
+    { category: '身体知循環指数', layer: '全層浸透', target: 'FT実施数・場の体験頻度・参加者感受性変化率', freq: '半期', value: 38, max: 100 },
+  ];
+
+  return `
+    <div class="page-header">
+      <div>
+        <div class="page-title">ダイナミックKPI</div>
+        <div class="page-subtitle">応答の継続を測定するSCM固有の動的指標システム</div>
+      </div>
+    </div>
+
+    <!-- 適応ギャップ大表示 -->
+    <div class="card" style="margin-bottom:20px; border-top:3px solid var(--deep-brown);">
+      <div class="card-header">
+        <div class="card-title">適応ギャップの構造</div>
+        <div class="card-badge" style="background:${adaptationGap > 30 ? 'rgba(192,57,43,0.1); color:#c0392b;' : 'rgba(45,138,78,0.1); color:#2d8a4e;'}">${adaptationGap > 30 ? '要注意' : '健全'}</div>
+      </div>
+      <div class="card-body">
+        <div style="display:flex; align-items:center; justify-content:center; gap:24px; margin-bottom:20px;">
+          <div style="text-align:center; padding:24px 32px; background:#f8f4ef; border:1px solid var(--border);">
+            <div style="font-size:10px; color:var(--text-muted); letter-spacing:0.1em; margin-bottom:6px;">S — 社会変化速度</div>
+            <div style="font-family:'Hiragino Mincho ProN',serif; font-size:48px; font-weight:700; color:var(--deep-brown); line-height:1;">${socialVelocity}</div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:6px;">社会段階層が測定する段階移行進行度の変化率</div>
+          </div>
+          <div style="font-size:36px; color:var(--text-muted); font-weight:300;">−</div>
+          <div style="text-align:center; padding:24px 32px; background:#f8f4ef; border:1px solid var(--border);">
+            <div style="font-size:10px; color:var(--text-muted); letter-spacing:0.1em; margin-bottom:6px;">O — 組織準備度</div>
+            <div style="font-family:'Hiragino Mincho ProN',serif; font-size:48px; font-weight:700; color:var(--deep-brown); line-height:1;">${orgReadiness}</div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:6px;">次段階に必要なケイパビリティの充足度</div>
+          </div>
+          <div style="font-size:36px; color:var(--text-muted); font-weight:300;">=</div>
+          <div style="text-align:center; padding:24px 32px; background:${adaptationGap > 30 ? 'rgba(192,57,43,0.06)' : 'rgba(45,138,78,0.06)'}; border:1px solid ${adaptationGap > 30 ? 'rgba(192,57,43,0.3)' : 'rgba(45,138,78,0.3)'};">
+            <div style="font-size:10px; color:var(--text-muted); letter-spacing:0.1em; margin-bottom:6px;">G — 適応ギャップ</div>
+            <div style="font-family:'Hiragino Mincho ProN',serif; font-size:48px; font-weight:700; color:${adaptationGap > 30 ? '#c0392b' : '#2d8a4e'}; line-height:1;">${adaptationGap}</div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:6px;">G = S − O</div>
+          </div>
+        </div>
+
+        <!-- 対応プロトコル -->
+        ${adaptationGap > 20 ? `
+        <div style="padding:16px; background:rgba(192,57,43,0.04); border:1px solid rgba(192,57,43,0.2); margin-bottom:0;">
+          <div style="font-size:11px; font-weight:700; color:#c0392b; letter-spacing:0.08em; margin-bottom:12px;">対応プロトコル（適応ギャップ 20ポイント超）</div>
+          ${[
+            { step: 1, layer: '社会段階層', action: 'シグナル診断を更新し、どの軸での変化速度が加速しているかを特定' },
+            { step: 2, layer: '組織構造層', action: '低スコアのケイパビリティ領域を特定し、Horizon 2のProbe配分を増加' },
+            { step: 3, layer: '意味生成層', action: '「なぜ私たちはこの変化に応答する必要があるか」という問いを中心に据えた全社対話を実施' },
+          ].map(p => `
+            <div style="display:flex; gap:14px; margin-bottom:10px; align-items:flex-start;">
+              <div style="width:24px; height:24px; border-radius:50%; background:#c0392b; color:white; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0;">${p.step}</div>
+              <div>
+                <span style="font-size:11px; font-weight:700; color:var(--deep-brown);">${p.layer}:</span>
+                <span style="font-size:12px; color:var(--text-secondary); margin-left:6px;">${p.action}</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+        ` : ''}
+      </div>
+    </div>
+
+    <!-- KPI全体設計テーブル -->
+    <div class="card" style="margin-bottom:20px; border-top:3px solid var(--amber);">
+      <div class="card-header">
+        <div class="card-title">ダイナミックKPIの全体設計</div>
+        <div class="card-badge">8カテゴリ</div>
+      </div>
+      <div class="card-body" style="padding:0;">
+        <table style="width:100%; border-collapse:collapse; font-size:12px;">
+          <thead>
+            <tr style="background:var(--deep-brown); color:white;">
+              <th style="padding:10px 14px; text-align:left; font-size:11px; font-weight:600;">KPIカテゴリ</th>
+              <th style="padding:10px 14px; text-align:left; font-size:11px; font-weight:600;">対応する層</th>
+              <th style="padding:10px 14px; text-align:left; font-size:11px; font-weight:600;">測定対象</th>
+              <th style="padding:10px 14px; text-align:center; font-size:11px; font-weight:600;">更新頻度</th>
+              <th style="padding:10px 14px; text-align:center; font-size:11px; font-weight:600;">現在値</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${kpiTable.map((k, i) => `
+              <tr style="border-bottom:1px solid var(--border); background:${i % 2 === 0 ? 'white' : '#faf6f0'}; ${k.category === '適応ギャップ' ? 'font-weight:600;' : ''}">
+                <td style="padding:12px 14px; color:var(--deep-brown); font-weight:700;">${k.category}</td>
+                <td style="padding:12px 14px; color:var(--text-muted); font-size:11px; white-space:nowrap;">${k.layer}</td>
+                <td style="padding:12px 14px; color:var(--text-secondary); line-height:1.5;">${k.target}</td>
+                <td style="padding:12px 14px; text-align:center;">
+                  <span style="padding:2px 8px; background:#f3ede6; color:var(--deep-brown); font-size:10px; font-weight:600;">${k.freq}</span>
+                </td>
+                <td style="padding:12px 14px; text-align:center;">
+                  <div style="font-family:'Hiragino Mincho ProN',serif; font-size:16px; font-weight:700; color:var(--deep-brown);">${k.value}</div>
+                  <div style="height:4px; background:#f3ede6; margin-top:4px; overflow:hidden;">
+                    <div style="height:100%; width:${Math.min(100, k.value/k.max*100)}%; background:${k.value/k.max > 0.7 ? '#2d8a4e' : k.value/k.max > 0.4 ? 'var(--amber)' : 'var(--terracotta)'};"></div>
+                  </div>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ダイナミックKPIの根本思想 -->
+    <div style="padding:20px 24px; background:var(--deep-brown); color:white;">
+      <div style="font-size:10px; letter-spacing:0.12em; color:var(--peach); margin-bottom:10px;">ダイナミックKPIの根本思想</div>
+      <div style="font-size:13px; line-height:2; color:rgba(255,255,255,0.9);">最適化社会の経営指標は「達成の証明」を目的とする。SCMのダイナミックKPIは「応答の継続」を目的とする。社会の変化速度に対して誠実に向き合い、自組織の現在地と不足を明示し、次のアクションへの問いを生み出す——このプロセスこそがKPI活用の目的である。指標の最適化ではなく、指標を通じた継続的な応答が求められる。</div>
     </div>
   `;
 }
