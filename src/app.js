@@ -106,6 +106,12 @@ function render() {
               <span class="nav-icon">▤</span> アクティビティ
             </div>
           </div>
+          <div class="nav-section">
+            <div class="nav-section-title">ガイド</div>
+            <div class="nav-item" data-page="about">
+              <span class="nav-icon">？</span> このツールについて
+            </div>
+          </div>
         </nav>
         <div class="sidebar-footer">
           SINIC循環経営モデル v1.0<br>
@@ -133,6 +139,7 @@ function render() {
       else if (page === 'portfolio') main.innerHTML = renderPortfolio();
       else if (page === 'circulation') main.innerHTML = renderCirculation();
       else if (page === 'phase') main.innerHTML = renderPhase();
+      else if (page === 'about') main.innerHTML = renderAbout();
       else main.innerHTML = renderPlaceholder(item.textContent.trim());
     });
   });
@@ -611,6 +618,110 @@ function renderPlaceholder(title) {
       <div style="font-size:48px; color:var(--border); margin-bottom:16px;">◉</div>
       <div style="font-size:14px; color:var(--text-muted);">Coming Soon</div>
     </div></div>
+  `;
+}
+
+function renderAbout() {
+  return `
+    <div class="page-header">
+      <div>
+        <div class="page-title">このツールについて</div>
+        <div class="page-subtitle">SINIC経営ダッシュボード — バックキャスティング経営管理ツール</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-body" style="padding:28px;">
+        <h2 style="font-family:'Hiragino Mincho ProN',serif; font-size:18px; color:var(--deep-brown); margin-bottom:16px;">SINIC経営ダッシュボードとは</h2>
+        <p style="font-size:14px; line-height:2; color:var(--text-secondary); margin-bottom:16px;">
+          SINIC経営ダッシュボードは、オムロン創業者・立石一真が1970年に提唱した未来予測理論<strong>「SINIC理論」</strong>（Seed-Innovation to Need-Impetus Cyclic Evolution）を経営に実装するための管理ツールです。
+        </p>
+        <p style="font-size:14px; line-height:2; color:var(--text-secondary); margin-bottom:16px;">
+          SINIC理論は、科学・技術・社会の三者が円環的に相互作用しながら社会が進化していくという動的モデルです。この理論は、情報化社会の到来を正確に予見し、現在の<strong>最適化社会</strong>から<strong>自律社会</strong>（2025年頃〜）、そして<strong>自然社会</strong>（2033年頃〜）への段階的移行を描いています。
+        </p>
+        <p style="font-size:14px; line-height:2; color:var(--text-secondary);">
+          本ダッシュボードは、2025年のSINIC経営コンソーシアムで提案された<strong>「SINIC循環経営モデル（SCM）」</strong>を実装するものです。従来の財務KPIを補完する「社会段階移行への準備度」を測定・可視化し、組織の<strong>未来への応答力（Correspondence）</strong>を高めます。
+        </p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-header">
+        <div class="card-title">SINIC循環経営モデルの三層構造</div>
+      </div>
+      <div class="card-body">
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
+          <div style="padding:16px; border:1px solid var(--border); border-top:3px solid var(--deep-brown); text-align:center;">
+            <div style="font-size:12px; font-weight:700; color:white; background:var(--deep-brown); width:24px; height:24px; line-height:24px; border-radius:50%; margin:0 auto 8px;">1</div>
+            <div style="font-family:'Hiragino Mincho ProN',serif; font-size:14px; font-weight:700; color:var(--deep-brown);">社会段階層</div>
+            <div style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">Social Phase Layer</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.7; text-align:left;">
+              SINIC理論の社会段階モデルを「地図」として、最適化社会・自律社会・自然社会への移行シグナルをリアルタイムでモニタリングする<strong>知覚装置</strong>。
+            </div>
+          </div>
+          <div style="padding:16px; border:1px solid var(--border); border-top:3px solid var(--amber); text-align:center;">
+            <div style="font-size:12px; font-weight:700; color:white; background:var(--amber); width:24px; height:24px; line-height:24px; border-radius:50%; margin:0 auto 8px;">2</div>
+            <div style="font-family:'Hiragino Mincho ProN',serif; font-size:14px; font-weight:700; color:var(--deep-brown);">組織構造層</div>
+            <div style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">Organizational Architecture</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.7; text-align:left;">
+              社会段階の移行に連動して、現段階最適化・次段階準備・遠未来構想の三軸の重心を動的に移動させる<strong>変換装置</strong>。
+            </div>
+          </div>
+          <div style="padding:16px; border:1px solid var(--border); border-top:3px solid var(--terracotta); text-align:center; background:#faf6f0;">
+            <div style="font-size:12px; font-weight:700; color:white; background:var(--terracotta); width:24px; height:24px; line-height:24px; border-radius:50%; margin:0 auto 8px;">3</div>
+            <div style="font-family:'Hiragino Mincho ProN',serif; font-size:14px; font-weight:700; color:var(--deep-brown);">意味生成層</div>
+            <div style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">Sensemaking Layer</div>
+            <div style="font-size:12px; color:var(--text-secondary); line-height:1.7; text-align:left;">
+              「自然社会における我々の存在意義は何か」を問い続け、未来への責任ある<strong>応答（Correspondence）</strong>を生成する<strong>創造装置</strong>。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-header">
+        <div class="card-title">ダッシュボード機能一覧</div>
+      </div>
+      <div class="card-body">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+          ${[
+            { icon: '◉', title: 'ダッシュボード', desc: '4つのKPIカテゴリ、社会段階タイムライン、五循環モニター、ポートフォリオ、応答を一画面に統合表示' },
+            { icon: '◎', title: 'KPI詳細', desc: '社会段階知覚・段階移行準備度・循環活性度・意味生成活性度の4カテゴリをサブ指標・トレンド・インサイト付きで可視化' },
+            { icon: '①', title: '社会段階層', desc: 'Seed型（科学→技術→社会）とNeed型（社会→技術→科学）の移行シグナルを検知・記録し、社会段階マッピング上に配置' },
+            { icon: '▣', title: 'ポートフォリオ', desc: '自然社会ビジョンから逆算した複数の移行経路仮説（Probe）を管理。社会段階適合度・学習貢献度・翻訳可能性の3基準で評価' },
+            { icon: '⇄', title: '未来への応答', desc: '「避け難い未来」からの問いかけに対する組織的な応答を蓄積。受動的な「対応」ではなく責任ある「応答」を組織文化に埋め込む' },
+            { icon: '⟳', title: '五循環モニター', desc: 'Seed-Need循環・段階移行循環・翻訳循環・共創循環・身体知循環の5つの循環の活性度を測定' },
+          ].map(f => `
+            <div style="display:flex; gap:12px; padding:14px; border:1px solid var(--border);">
+              <div style="width:32px; height:32px; line-height:32px; text-align:center; background:#f3ede6; color:var(--deep-brown); font-size:16px; flex-shrink:0;">${f.icon}</div>
+              <div>
+                <div style="font-size:13px; font-weight:700; color:var(--deep-brown); margin-bottom:4px;">${f.title}</div>
+                <div style="font-size:11px; color:var(--text-secondary); line-height:1.6;">${f.desc}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-top:3px solid var(--deep-brown);">
+      <div class="card-body" style="padding:24px; background:var(--deep-brown); color:white;">
+        <div style="font-size:10px; letter-spacing:0.12em; color:var(--peach); margin-bottom:8px;">CORRESPONDENCE</div>
+        <div style="font-family:'Hiragino Mincho ProN',serif; font-size:16px; font-weight:700; margin-bottom:12px;">「対応」から「応答」へ</div>
+        <p style="font-size:13px; line-height:1.9; color:rgba(255,255,255,0.9); margin-bottom:12px;">
+          SINIC経営の本質は、未来を予測することよりもむしろ、予測された未来に対する応答を出せる<strong style="color:white;">「判断の力」</strong>を組織の中に持つことにあります。
+        </p>
+        <p style="font-size:13px; line-height:1.9; color:rgba(255,255,255,0.9);">
+          受動的な「対応（Response）」ではなく、責任を持って未来に向き合う<strong style="color:white;">「応答（Correspondence）」</strong>。このダッシュボードは、その営みを組織的に構造化し、持続可能な形で運用するためのツールです。
+        </p>
+      </div>
+    </div>
+
+    <div style="margin-top:20px; padding:16px; text-align:center; font-size:11px; color:var(--text-muted);">
+      SINIC経営ダッシュボード v1.0 — 特定非営利活動法人ミラツク / 株式会社ヒューマンルネッサンス研究所<br>
+      <a href="https://yuyanishimura0312.github.io/sinic-dashboard/" style="color:var(--terracotta);">https://yuyanishimura0312.github.io/sinic-dashboard/</a>
+    </div>
   `;
 }
 
